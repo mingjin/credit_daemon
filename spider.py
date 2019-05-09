@@ -12,7 +12,7 @@ sys.setdefaultencoding('utf-8')
 
 iedriver = "bin\IEDriverServer_Win32_3.9.0.exe"
 timestamp = str(int(round(time.time() * 1000)))
-screenshot_img = 'screenshot_' + timestamp + '.png'
+screenshot_img = 'tmp/screenshot_' + timestamp + '.png'
 browser = None
 
 def home():
@@ -30,25 +30,25 @@ def jump_to_login_page():
 
     time.sleep(1)
     browser.switch_to.window(browser.window_handles[0])
-    
+
 def get_captcha():
     browser.save_screenshot(screenshot_img)
     result = CaptchaResolver().resolve_captcha(screenshot_img)
     print screenshot_img + ":  " + result
     return result
-        
+
 def submit_login_form(username, password):
     browser.switch_to.frame("conFrame")
     browser.find_element_by_id("loginname").send_keys(username)
 
     pyautogui.click(215, 400)
     password_type(password)
-        
+
     captcha = get_captcha()
     browser.find_element_by_id("_@IMGRC@_").send_keys(captcha)
 
     time.sleep(1)
-    #browser.find_element_by_css_selector("form[name='loginForm'] input[type='submit']").click()
+    browser.find_element_by_css_selector("form[name='loginForm'] input[type='submit']").click()
 
 def login(username, password):
     try:
@@ -65,28 +65,28 @@ def login(username, password):
     _msg_ = ''
     lgnInfo = ''
     pwdInfo = ''
-    
+
     try:
         lgnInfo = browser.find_element_by_id('loginNameInfo').text
         pwdInfo = browser.find_element_by_id('passwordInfo').text
         print('loginNameInfo:%s, passwordInfo:%s' %(lgnInfo, pwdInfo))
     except:
         print('loginNameInfo or passwordInfo not exist!')
-        
+
     try:
         errMsg = browser.find_element_by_id('_error_field_').text
     except:
         print('errMsg not exist!')
-    
+
     try:
         _msg_ = browser.find_element_by_id('_@MSG@_').text
     except:
         print('_msg_ not exist!')
-        
+
     print('errorMsg:' + errMsg)
     print('_msg_:' + _msg_)
-    
-    msg = errMsg if errMsg != '' else _msg_ 
+
+    msg = errMsg if errMsg != '' else _msg_
     inputInfo = lgnInfo if lgnInfo != '' else pwdInfo
     print('msg=' + msg)
     if len(msg.strip()) > 0:
@@ -112,4 +112,7 @@ def login(username, password):
     return json.dumps(ret, ensure_ascii=False)
 
 
-login("test123", "test123")
+if __name__ == '__main__':
+    login("test123", "test123")
+
+#End

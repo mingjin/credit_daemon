@@ -63,6 +63,8 @@ class CaptchaResolver(object):
 
     def get_captcha_value(self, result):
         tree = etree.XML(result)
+        if tree.xpath("//Error") is None:
+            raise Exception(tree.xpatch("//Error/text()")[0])
         return tree.xpath("//Result/text()")[0]
 
     def resolve_captcha(self, imagePath):
@@ -71,7 +73,7 @@ class CaptchaResolver(object):
         paramDict['username'] = 'skyairmj'
         paramDict['password'] = '70493763'
         paramDict['typeid'] = '3060'
-        paramDict['timeout'] = '60'
+        paramDict['timeout'] = '90'
         paramDict['softid'] = '127153'
         paramDict['softkey'] = 'b82ac04048ed4087b0499896bea4b2d9'
         paramKeys = ['username',
@@ -90,4 +92,12 @@ class CaptchaResolver(object):
         img.save(imagePath+"_upload.gif", format="gif")
         filebytes = open(imagePath+"_upload.gif", "rb").read()
         result = self.http_upload_image("http://api.ruokuai.com/create.xml", paramKeys, paramDict, filebytes)
+        print '-------'+result
         return self.get_captcha_value(result)
+
+
+if __name__ == '__main__':
+    result = CaptchaResolver().resolve_captcha('tmp/screenshot_1556268677969.png')
+    print result
+
+#End

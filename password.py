@@ -77,9 +77,9 @@ def password_type(password):
     key_press(0x2e)
     key_press(0x13)
     key_press(0x2e)
-    
-    
-    
+
+
+
 
 # Press 'A' key
 # Scancodes references : https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
