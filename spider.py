@@ -104,7 +104,7 @@ def login(username, password):
         msg = '登录成功'
         result = ';'.join([item['name'] + '=' + item['value'] for item in browser.get_cookies()])
 
-    browser.quit()
+    #browser.quit()
     ret = {}
     ret['result'] = result
     ret['status'] = status

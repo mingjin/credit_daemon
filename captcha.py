@@ -97,7 +97,7 @@ class CaptchaResolver(object):
 
 
 if __name__ == '__main__':
-    result = CaptchaResolver().resolve_captcha('tmp/screenshot_1556268677969.png')
+    result = CaptchaResolver().resolve_captcha('tmp/screenshot_1557401783279.png')
     print result
 
 #End
