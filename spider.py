@@ -50,14 +50,7 @@ def submit_login_form(username, password):
     time.sleep(1)
     browser.find_element_by_css_selector("form[name='loginForm'] input[type='submit']").click()
 
-def login(username, password):
-    try:
-        home()
-        jump_to_login_page()
-        submit_login_form(username, password)
-    except Exception as e:
-        traceback.print_exc(file=sys.stderr)
-
+    time.sleep(2)
     #status: -1表示验证码错误，0表示登录名或密码错误，1表示登录成功，-2表示未知错误
     status = 0
     result = ''
@@ -104,12 +97,36 @@ def login(username, password):
         msg = '登录成功'
         result = ';'.join([item['name'] + '=' + item['value'] for item in browser.get_cookies()])
 
-    #browser.quit()
+    
     ret = {}
     ret['result'] = result
     ret['status'] = status
     ret['message'] = msg
-    return json.dumps(ret, ensure_ascii=False)
+
+    return ret
+
+
+def query_credit_report():
+    try:
+        popupbox = browser.find_element_by_id('popupbox')
+        browser.find_element_by_css_selector('div#popupbox input.pop_button').click()
+    except:
+        print('popupbox not exists!')
+
+    
+    
+
+def login(username, password):
+    try:
+        home()
+        jump_to_login_page()
+        submit_login_form(username, password)
+        query_credit_report()
+    except Exception as e:
+        traceback.print_exc(file=sys.stderr)
+
+    #browser.quit()
+    return
 
 
 if __name__ == '__main__':
